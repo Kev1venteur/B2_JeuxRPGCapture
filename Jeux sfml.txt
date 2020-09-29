@@ -1,0 +1,115 @@
+Affichage de la map et du joueur depuis les sprites sur une fenetre séparés sfml
+
+
+    sf::RenderWindow window1(sf::VideoMode(850, 575), "Map EpsiLeague");
+    window1.setFramerateLimit(60);
+    window1.setKeyRepeatEnabled(false);
+
+	sf::Texture texture;
+	if (!texture.loadFromFile("../sprites/map.png"))
+	{
+		cout <<"Le fichier n'est pas charge" << endl;
+	}
+
+	sf::Texture bonhomme;
+	if (!bonhomme.loadFromFile("../sprites/player.png"))
+	{
+		cout <<"Le fichier n'est pas charge" << endl;
+	}
+
+	sf::Music music;
+	music.setVolume(75.f);
+	if (!music.openFromFile("../chiptunes/game.ogg"))
+    {
+        cout <<"Le fichier n'est pas charge" << endl;
+    }
+
+	sf::Sprite map;
+	sf::Sprite player;
+
+	map.setTexture(texture);
+    player.setTexture(bonhomme);
+    texture.setSmooth(true);
+
+    map.setScale(1.5f, 1.5f);
+    map.scale(1.0f, 1.0f);
+    player.setPosition(20.f, 50.f);
+    player.move(20.f, 20.f);
+
+    sf::FloatRect spriteSize=player.getGlobalBounds();
+    player.setOrigin(spriteSize.width/2.,spriteSize.height/2.);
+
+     // Sprite coordinates
+    int x=window1.getSize().x/2.;
+    int y=window1.getSize().y/2.;
+
+    // Flags for key pressed
+    bool upFlag=false;
+    bool downFlag=false;
+    bool leftFlag=false;
+    bool rightFlag=false;
+
+    music.play();
+
+    sf::Clock timer;
+    while (window1.isOpen())
+    {
+        // Process events
+        sf::Event event;
+        while (window1.pollEvent(event))
+        {
+            // Close the window if a key is pressed or if requested
+            if (event.type == sf::Event::Closed) window1.close();
+            // If a key is pressed
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                // If escape is pressed, close the application
+                case  sf::Keyboard::Escape : window1.close(); break;
+
+                // Process the up, down, left and right keys
+                case sf::Keyboard::Up :     upFlag=true; break;
+                case sf::Keyboard::Down:    downFlag=true; break;
+                case sf::Keyboard::Left:    leftFlag=true; break;
+                case sf::Keyboard::Right:   rightFlag=true; break;
+                default : break;
+                }
+            }
+
+            // If a key is released
+            if (event.type == sf::Event::KeyReleased)
+            {
+                switch (event.key.code)
+                {
+                // Process the up, down, left and right keys
+                case sf::Keyboard::Up :     upFlag=false; break;
+                case sf::Keyboard::Down:    downFlag=false; break;
+                case sf::Keyboard::Left:    leftFlag=false; break;
+                case sf::Keyboard::Right:   rightFlag=false; break;
+                default : break;
+                }
+            }
+        }
+
+        // Update coordinates
+        if (leftFlag) x-=SPRITE_SPEED;
+        if (rightFlag) x+=SPRITE_SPEED;
+
+        if (upFlag) y-=SPRITE_SPEED;
+        if (downFlag) y+=SPRITE_SPEED;
+
+        // Check screen boundaries
+        if (x<0) x=0;
+        if (x>(int)window1.getSize().x) x=window1.getSize().x;
+        if (y<0) y=0;
+        if (y>(int)window1.getSize().y) y=window1.getSize().y;
+
+        // Clear the window and apply grey background
+        window1.clear();
+        window1.draw(map);
+        window1.draw(player);
+        player.setPosition(x,y);
+        window1.draw(player);
+        window1.display();
+    }

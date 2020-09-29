@@ -1,0 +1,51 @@
+8 Types de Zones (Epsi=mix des 8 autres voir carte) 
+Codeurs=pokémons=Ynov Sauvage
+Ingénieur=Dresseurs
+
+Epsi=Zone de génération de codeurs avec skills aléatoire (entre 8 skills)
+
+Map: -tailleX : 250 unsigned short int
+     -tailleY : 250 unsigned short int
+
+Les zones seront créée dans le constructeur de la map.
+
+
+Zone: -xMin : unsigned short int
+      -xMax : unsigned short int
+      -yMin : unsigned short int
+      -yMax : unsigned short int
+      -typeZone : string
+
+Une Zone sur la carte ex: scratch, sera sous-découpée en d'autre quadrilatère avec les attributs de Zone
+
+Codeur: -typeSkill : string
+        -pourcentage : unsigned float
+	-id : unsigned int
+	-vie : float
+
+EquipeCodeur: liste de 0 à 3 codeurs
+
+Ingenieur: -typeSkill : string              -> dépends de la zone
+	   -nombreCodeurs : unsigned int    -> de 1 à 3
+	   -equipeCodeurs : EquipeCodeurs
+	   -nom : string
+	   -montantArgent : unsigned int
+	   -id : unsigned int
+	   -forceC : float
+	   -forceJava : float
+	   -forceCpp : float
+	   -forceHtmlCss : float
+	   -forcePhp : float
+	   -forceCSharp : float
+	   -forceScratch : float
+	   -forceJavaScript : float
+	   -vie : float
+
+
+
+Une partie va de l'initialisation à la victoire contre le BOSS ou à la défaite contre des pnj avant.
+Dans le jeux nous serons un Ingénieur, mais cela ne nous empêchera pas d'en croiser d'autre et de les combattre.
+Les combats seront des mise à mort.
+Une fois un codeur adverse vaincu, il sera possible de d'assimiler le skill qui lui est associé ou d'échanger le victoire contre une prime.
+La fuite sera possible, mais le montant d'argent baissera.
+Le montant d'argent sera échangeable avec des potions.
